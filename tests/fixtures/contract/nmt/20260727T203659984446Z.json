@@ -1,0 +1,13 @@
+{
+  "method": "POST",
+  "path": "/nmt",
+  "request": {
+    "src_lang": "ta",
+    "text": "unavukku pinnal oru maathirai edunga",
+    "tgt_lang": "hi"
+  },
+  "response": {
+    "translated_text": "[hi] unavukku pinnal oru maathirai edunga"
+  },
+  "status_code": 200
+}

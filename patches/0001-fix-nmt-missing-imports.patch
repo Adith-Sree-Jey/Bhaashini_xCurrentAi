@@ -1,0 +1,32 @@
+From bfc49a0e489c083ada3030f98b23adda9f15ba91 Mon Sep 17 00:00:00 2001
+From: Puriyudha contributors <puriyudha-dev@users.noreply.github.com>
+Date: Mon, 27 Jul 2026 20:01:26 +0000
+Subject: [PATCH] models/nmt.py: fix NameError on Nmt.verify() fallback path
+
+Nmt.verify() calls check_output() and time.time()/time.sleep() when the
+bhashini_models health check fails, but the module never imports
+subprocess.check_output or the time module. Every call path through
+verify() that actually needs to restart bhashini_models.service (i.e.
+exactly the case verify() exists to handle) raises NameError instead of
+restarting the service.
+
+Add the same two imports models/asr.py already has for the identical
+verify()/update() pattern.
+---
+ python/pocketinfer/models/nmt.py | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/python/pocketinfer/models/nmt.py b/python/pocketinfer/models/nmt.py
+index 85b7263..776f1e8 100644
+--- a/python/pocketinfer/models/nmt.py
++++ b/python/pocketinfer/models/nmt.py
+@@ -1,4 +1,6 @@
+ import requests
++import time
++from subprocess import check_output
+ 
+ 
+ class Nmt:
+-- 
+2.43.0
+

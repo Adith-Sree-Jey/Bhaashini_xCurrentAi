@@ -1,0 +1,31 @@
+# ARM / CircuitPython-only packages listed in
+# vendor/suno-sutra-sw/python/requirements.txt (pinned commit
+# 89487b718da9eddbc302d93e2a04e79522c67bc3) that are intentionally NOT
+# installed in the x86 dev venv built by scripts/setup_dev.sh.
+#
+# These support the Jetson's SPI ILI9341 display and XPT2046 touch
+# controller via the Adafruit Blinka compatibility layer. None of them are
+# imported by `pocketinfer-service --dummy-board --list-apps`; see
+# constraints/x86-dev-requirements.txt and docs/dev_environment.md for the
+# full trace and rationale.
+#
+# One PyPI project name per line. Matching in
+# scripts/check_requirements_drift.py is case-insensitive and treats "-"
+# and "_" as equivalent (PyPI normalisation rules), so list the name however
+# it appears upstream.
+Adafruit-Blinka
+adafruit-blinka-displayio
+adafruit-circuitpython-bitmap_font
+adafruit-circuitpython-busdevice
+adafruit-circuitpython-connectionmanager
+adafruit-circuitpython-display_button
+adafruit-circuitpython-display_shapes
+adafruit-circuitpython-display-text
+adafruit-circuitpython-ili9341
+adafruit-circuitpython-requests
+adafruit-circuitpython-rgb-display
+adafruit-circuitpython-ticks
+adafruit-circuitpython-typing
+Adafruit-PlatformDetect
+Adafruit-PureIO
+xpt2046_circuitpython

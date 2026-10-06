@@ -1,0 +1,14 @@
+{
+  "model": "qwen3-vl:2b",
+  "created_at": "2026-07-28T00:00:00.000000000Z",
+  "response": "{\"caption\": \"a blister strip of white tablets\"}",
+  "done": true,
+  "done_reason": "stop",
+  "context": [4, 5, 6],
+  "total_duration": 1523456789,
+  "load_duration": 23456789,
+  "prompt_eval_count": 40,
+  "prompt_eval_duration": 98765,
+  "eval_count": 12,
+  "eval_duration": 156789
+}

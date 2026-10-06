@@ -1,0 +1,32 @@
+From 6b6c8855988d4d606d5df9504303d5d7ff50d37a Mon Sep 17 00:00:00 2001
+From: Puriyudha contributors <puriyudha-dev@users.noreply.github.com>
+Date: Mon, 27 Jul 2026 20:01:26 +0000
+Subject: [PATCH] applications/hear_the_world.py: fix bhashini_models typo in
+ service_dependencies
+
+HearTheWorld.METADATA["service_dependencies"] lists "bashini_models",
+which does not match the actual systemd unit, bhashini_models.service
+(see models/asr.py, models/nmt.py, models/tts.py, and rootfs/roles/indic,
+which all spell it correctly). Anything that reads service_dependencies
+to check or start the Bhashini models service before running
+HearTheWorld will silently look for a service that does not exist.
+---
+ python/pocketinfer/applications/hear_the_world.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/python/pocketinfer/applications/hear_the_world.py b/python/pocketinfer/applications/hear_the_world.py
+index f50024f..5ca9762 100644
+--- a/python/pocketinfer/applications/hear_the_world.py
++++ b/python/pocketinfer/applications/hear_the_world.py
+@@ -44,7 +44,7 @@ import threading
+         "input_language": "en",
+         "output_language": "en",
+     },
+-    "service_dependencies": ["ollama", "bashini_models"],
++    "service_dependencies": ["ollama", "bhashini_models"],
+ })
+ class HearTheWorld(BaseApplication):
+     def start(self):
+-- 
+2.43.0
+

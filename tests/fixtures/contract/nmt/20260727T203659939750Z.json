@@ -1,0 +1,13 @@
+{
+  "method": "POST",
+  "path": "/nmt",
+  "request": {
+    "src_lang": "hi",
+    "text": "khana ke baad ek goli lijiye",
+    "tgt_lang": "ta"
+  },
+  "response": {
+    "translated_text": "[ta] khana ke baad ek goli lijiye"
+  },
+  "status_code": 200
+}

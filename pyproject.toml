@@ -1,0 +1,64 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "puriyudha"
+version = "0.1.0"
+description = "Offline medication-comprehension appliance: prescription/pharmacy-counter capture, structured medication record, patient-language explanation, and understanding verification."
+# Deliberately no `readme = "README.md"` here: setuptools reads that file as
+# the package long_description at build time and requires it to be UTF-8.
+# This is an internal dev package (never published to PyPI), so the long
+# description isn't needed - and keeping the build independent of
+# README.md's encoding is one less thing that can break `pip install -e .`.
+license = { text = "MIT" }
+requires-python = ">=3.10"
+# Python 3.10 is the reference target: it matches JetPack 6.2's system interpreter
+# (cp310) on the Jetson Orin Nano Super Dev Kit. Do not use 3.11+-only syntax
+# (e.g. exception groups, match-statement pattern refinements added after 3.10)
+# anywhere in puriyudha/, even if the laptop you are developing on has a newer
+# interpreter. See docs/dev_environment.md.
+authors = [
+    { name = "Puriyudha contributors" },
+]
+classifiers = [
+    "Programming Language :: Python :: 3.10",
+    "Operating System :: POSIX :: Linux",
+]
+
+# Kept deliberately minimal and aarch64/Jetson-installable. Do not add torch,
+# transformers, or anything that pulls a second CUDA stack (see CLAUDE.md).
+dependencies = [
+    "numpy",
+    "opencv-python",
+    "rapidfuzz",
+    "pillow",
+    "qrcode",
+    "pytesseract",
+    "requests",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4",
+    "pytest-cov",
+]
+
+[tool.setuptools.packages.find]
+include = ["puriyudha*"]
+
+[tool.pytest.ini_options]
+minversion = "7.4"
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+addopts = "-ra --strict-markers"
+markers = [
+    "hermetic: test does not touch the network, Ollama, or the real Bhashini service (all tests must qualify)",
+]
+# Puts the repo root at the front of sys.path before collection, regardless
+# of invoking interpreter, cwd, or whether puriyudha/pocketinfer are
+# editable-installed. Required together with tests/__init__.py to make
+# `from tests._fake_http import ...` resolve to *this* tests/ package
+# instead of a same-named package elsewhere on sys.path -- see
+# tests/__init__.py and docs/dev_environment.md for the full diagnosis.
+pythonpath = ["."]

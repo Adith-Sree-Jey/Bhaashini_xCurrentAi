@@ -1,0 +1,19 @@
+.venv/
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+build/
+dist/
+
+# Generated data artifacts (see data/README.md) - regenerate, don't commit.
+data/formulary.sqlite
+data/*.sqlite
+
+# Never commit anything that could contain captured patient data.
+*.phi

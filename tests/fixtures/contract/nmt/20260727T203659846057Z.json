@@ -1,0 +1,13 @@
+{
+  "method": "POST",
+  "path": "/nmt",
+  "request": {
+    "src_lang": "EN",
+    "text": "take one tablet after food",
+    "tgt_lang": "hi"
+  },
+  "response": {
+    "translated_text": "khana ke baad ek goli lijiye"
+  },
+  "status_code": 200
+}

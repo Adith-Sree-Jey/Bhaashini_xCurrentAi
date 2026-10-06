@@ -1,0 +1,56 @@
+# Cross-platform subset of vendor/suno-sutra-sw/python/requirements.txt that
+# installs and imports cleanly on a generic x86_64 Linux laptop, with no
+# Jetson attached.
+#
+# --- Why this file exists -------------------------------------------------
+# vendor/suno-sutra-sw is a git submodule pinned to upstream commit
+# 89487b718da9eddbc302d93e2a04e79522c67bc3 (main, as of 2026-07-28). Its
+# python/requirements.txt unconditionally lists Adafruit-Blinka plus a
+# dozen adafruit-circuitpython-*/xpt2046_circuitpython packages (see
+# constraints/arm_only_packages.txt for the exact list). Those are
+# CircuitPython hardware-abstraction packages for the Jetson's SPI ILI9341
+# display and XPT2046 touch controller. On a generic x86_64 laptop with no
+# Jetson attached they are unnecessary, and several of them are difficult or
+# impossible to get a working wheel for outside an ARM/Blinka-recognised
+# board.
+#
+# We traced every module-scope import in the vendored pocketinfer package
+# and confirmed that `pocketinfer-service --dummy-board --list-apps` (and,
+# by extension, `import pocketinfer.applications`) never touches any of
+# them: they are only reachable via pocketinfer.boards.jetson, which
+# pocketinfer.service only imports from inside Board.get_board() -- and
+# get_board() is only called when --dummy-board is *not* passed. Full trace
+# in docs/dev_environment.md.
+#
+# --- What we did instead of editing the vendored files --------------------
+# We do NOT edit vendor/suno-sutra-sw/python/requirements.txt (it is a
+# pinned upstream submodule; editing it would be invisible to `git diff`
+# against upstream and would silently drift on every submodule update).
+# Instead scripts/setup_dev.sh:
+#   1. installs the vendored package with
+#      `pip install --no-deps -e vendor/suno-sutra-sw/python`
+#      (--no-deps skips upstream's requirements.txt entirely), then
+#   2. installs *this* file to satisfy pocketinfer's actual cross-platform
+#      runtime imports.
+# tests/conftest.py additionally installs a small import shim for the two
+# ARM-only modules (Jetson.GPIO; the adafruit_display_text /
+# adafruit_bitmap_font / adafruit_button trio used by pocketinfer/ui/
+# handheld.py) that are imported at module scope elsewhere in the vendored
+# tree, so those modules stay importable under test even though they are
+# not needed for --dummy-board --list-apps itself.
+#
+# --- Keeping this in sync --------------------------------------------------
+# scripts/check_requirements_drift.py compares every package name in
+# vendor/suno-sutra-sw/python/requirements.txt against the union of this
+# file and constraints/arm_only_packages.txt, and warns (does not fail) if
+# upstream has added something neither file has triaged yet.
+pyserial
+ollama
+pyaudio
+numpy
+SpeechRecognition
+vosk
+piper-tts
+appdirs
+opencv-python
+psutil

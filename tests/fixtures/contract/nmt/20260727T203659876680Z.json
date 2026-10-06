@@ -1,0 +1,13 @@
+{
+  "method": "POST",
+  "path": "/nmt",
+  "request": {
+    "src_lang": "EN",
+    "text": "take one tablet after food",
+    "tgt_lang": "ta"
+  },
+  "response": {
+    "translated_text": "unavukku pinnal oru maathirai edunga"
+  },
+  "status_code": 200
+}

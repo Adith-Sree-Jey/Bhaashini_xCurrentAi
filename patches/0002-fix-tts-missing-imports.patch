@@ -1,0 +1,28 @@
+From 0e967f3bf31dead5eea02629bb86b1289372844b Mon Sep 17 00:00:00 2001
+From: Puriyudha contributors <puriyudha-dev@users.noreply.github.com>
+Date: Mon, 27 Jul 2026 20:01:26 +0000
+Subject: [PATCH] models/tts.py: fix NameError on Tts.verify() fallback path
+
+Same bug as models/nmt.py: Tts.verify() calls check_output() and
+time.time()/time.sleep() when the bhashini_models health check fails,
+but neither subprocess.check_output nor the time module is imported.
+Add the same two imports models/asr.py already has for the identical
+verify()/update() pattern.
+---
+ python/pocketinfer/models/tts.py | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/python/pocketinfer/models/tts.py b/python/pocketinfer/models/tts.py
+index ebc2be8..83f989b 100644
+--- a/python/pocketinfer/models/tts.py
++++ b/python/pocketinfer/models/tts.py
+@@ -1,4 +1,6 @@
+ import requests
++import time
++from subprocess import check_output
+ 
+ 
+ class Tts:
+-- 
+2.43.0
+

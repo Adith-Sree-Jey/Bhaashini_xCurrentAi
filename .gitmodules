@@ -1,0 +1,4 @@
+[submodule "vendor/suno-sutra-sw"]
+	path = vendor/suno-sutra-sw
+	url = https://github.com/currentai-org/suno-sutra-sw.git
+	branch = main
